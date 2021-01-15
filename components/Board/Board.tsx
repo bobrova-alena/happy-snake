@@ -59,39 +59,38 @@ export default function Board() {
     };
 
     useEffect(()=>{
-        let onkeydown = (e: KeyboardEvent)=> {
+        let trySetDirection = (condition: boolean, direction) => {
+            if(condition)
+                setDirection(direction);
+        };
+
+        let changeDirection = (direction) => {
             let currIsHorizontal = directionRef.current == 'left' || directionRef.current == 'right';
-            let currIsVertical = directionRef.current == 'top' || directionRef.current == 'bottom';
-            
-            switch (e.code) {
-                case 'ArrowLeft':
-                    if(currIsVertical)
-                        setDirection('left');
-                    break;
-                case 'ArrowRight':
-                    if(currIsVertical)
-                        setDirection('right');
-                    break;
-                case 'ArrowUp':
-                    if(currIsHorizontal)
-                        setDirection('top');
-                    break;
-                case 'ArrowDown':
-                    if(currIsHorizontal)
-                        setDirection('bottom');
-            }
+            let currIsVertical = directionRef.current == 'up' || directionRef.current == 'down';
+            trySetDirection(currIsVertical, direction);
+            trySetDirection(currIsHorizontal, direction);
         }
 
+        let onkeydown = (e: KeyboardEvent)=> {
+            changeDirection(e.code.replace('Arrow','').toLowerCase());
+        }
+
+        let swiped = (e) => {
+            changeDirection(e.detail.dir);
+        };
+
         document.addEventListener('keydown', onkeydown);
+        document.addEventListener('swiped', swiped);
 
         return () => {
+            document.removeEventListener('swiped', swiped);
             document.removeEventListener('keydown', onkeydown);
         }
     },[]);
 
     useEffect(()=>{
         if(!gameOver) {
-            let timeout = Math.max(800 - 100 * count, 200);
+            let timeout = Math.max(700 - 100 * count, 200);
             const timer = setTimeout(function moveSnake(){
                 let movedSnake = snakeRef.current.move(directionRef.current, appleRef.current);
                 if(checkGameOver(movedSnake))
