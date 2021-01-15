@@ -7,6 +7,7 @@ import { getRandomDirection } from '../../src/snake';
 import { useDispatch, useSelector } from 'react-redux';
 import { countIncreased, selectGameOver, finished } from './boardSlice';
 import { selectCount } from './boardSlice';
+import { Direction } from 'readline';
 
 export default function Board() {
     const [direction, setDirection] = useState(getRandomDirection());
@@ -61,37 +62,58 @@ export default function Board() {
     useEffect(()=>{
         let currIsHorizontal = directionRef.current == 'left' || directionRef.current == 'right';
         let currIsVertical = directionRef.current == 'top' || directionRef.current == 'bottom';
+        let trySetDirection = (condition: boolean, direction) => {
+            if(condition)
+                setDirection(direction);
+        };
 
         let onkeydown = (e: KeyboardEvent)=> {
             switch (e.code) {
                 case 'ArrowLeft':
-                    if(currIsVertical)
-                        setDirection('left');
+                    trySetDirection(currIsVertical, 'left');
                     break;
                 case 'ArrowRight':
-                    if(currIsVertical)
-                        setDirection('right');
+                    trySetDirection(currIsVertical, 'right');
                     break;
                 case 'ArrowUp':
-                    if(currIsHorizontal)
-                        setDirection('top');
+                    trySetDirection(currIsHorizontal, 'top');
                     break;
                 case 'ArrowDown':
-                    if(currIsHorizontal)
-                        setDirection('bottom');
+                    trySetDirection(currIsHorizontal, 'bottom');
+                    break;
             }
         }
 
         let swipedRight = (e) => {
-            if(currIsVertical)
-                setDirection('right');
+            trySetDirection(currIsVertical, 'right');
+            alert(e.target);
+        };
+
+        let swipedLeft = (e) => {
+            trySetDirection(currIsVertical, 'left');
+            alert(e.target);
+        };
+
+        let swipedTop = (e) => {
+            trySetDirection(currIsHorizontal, 'top');
+            alert(e.target);
+        };
+
+        let swipedBottom = (e) => {
+            trySetDirection(currIsHorizontal, 'bottom');
             alert(e.target);
         };
 
         document.addEventListener('keydown', onkeydown);
         document.addEventListener('swiped-right', swipedRight);
+        document.addEventListener('swiped-left', swipedLeft);
+        document.addEventListener('swiped-top', swipedTop);
+        document.addEventListener('swiped-bottom', swipedBottom);
 
         return () => {
+            document.addEventListener('swiped-bottom', swipedBottom);
+            document.addEventListener('swiped-top', swipedTop);
+            document.addEventListener('swiped-left', swipedLeft);
             document.removeEventListener('swiped-right', swipedRight);
             document.removeEventListener('keydown', onkeydown);
         }
