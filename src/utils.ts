@@ -38,7 +38,7 @@ export function getAppleCoord(shake: Snake) {
     return apple;
 }
 
-export function getSnakeTailCoors(direction: Direction) {
+export function getSnakeTailCoords(direction: Direction) {
     let tail: Coords;
     let distance = 3;
     let snakeInitialLength = 4;

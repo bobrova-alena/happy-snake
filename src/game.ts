@@ -1,9 +1,9 @@
 import { Direction, Snake } from "./snake";
-import { fieldSideSize, getSnakeTailCoors } from "./utils";
+import { fieldSideSize, getSnakeTailCoords } from "./utils";
 
 export function createSnake(direction: Direction){
     let snake = new Snake();
-    snake.initialize(getSnakeTailCoors(direction), direction);
+    snake.initialize(getSnakeTailCoords(direction), direction);
     return snake;
 }
 
