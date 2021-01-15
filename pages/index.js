@@ -10,7 +10,6 @@ import store from '../src/store';
 
 export default function Home() {
     const gameTitleStr = 'Happy Snake';
-    
 
     return (
         <Provider store={store}>

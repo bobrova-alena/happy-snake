@@ -82,9 +82,15 @@ export default function Board() {
             }
         }
 
+        let swipedRight = (e) => {
+            alert(e.target);
+        };
+
         document.addEventListener('keydown', onkeydown);
+        document.addEventListener('swiped-right', swipedRight);
 
         return () => {
+            document.removeEventListener('swiped-right', swipedRight);
             document.removeEventListener('keydown', onkeydown);
         }
     },[]);
