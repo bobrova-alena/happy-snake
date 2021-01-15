@@ -1,4 +1,4 @@
-import { Coords, Snake } from "./snake";
+import { Coords, Direction, Snake, snakeInitialLength } from "./snake";
 
 export function getId(xCoord: number, yCoord: number) {
     return `${xCoord}-${yCoord}`;
@@ -36,4 +36,35 @@ export function getAppleCoord(shake: Snake) {
     } while (insideOfSnake);
 
     return apple;
+}
+
+export function getSnakeTailCoords(direction: Direction) {
+    let tail: Coords;
+    let distance = 3;
+    let snakeInitialLength = 4;
+
+    let closeToEdge = false;
+    do {
+        tail = {
+            xCoord: getRandomCoord(fieldSideSize),
+            yCoord: getRandomCoord(fieldSideSize)
+        };
+
+        switch(direction) {
+            case 'left':
+                closeToEdge = tail.xCoord - snakeInitialLength < distance;
+                break;
+            case 'right':
+                closeToEdge = tail.xCoord + snakeInitialLength > fieldSideSize - distance;
+                break;
+            case 'up':
+                closeToEdge = tail.yCoord + snakeInitialLength > fieldSideSize - distance;
+                break;
+            default:
+                closeToEdge = tail.yCoord - snakeInitialLength < distance;
+                break;
+        }
+    } while (closeToEdge);
+
+    return tail;
 }
