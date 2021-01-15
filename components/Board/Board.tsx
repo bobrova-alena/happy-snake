@@ -85,7 +85,7 @@ export default function Board() {
         let swipedRight = (e) => {
             if(currIsVertical)
                 setDirection('right');
-            //alert(e.target);
+            alert(e.target);
         };
 
         document.addEventListener('keydown', onkeydown);
