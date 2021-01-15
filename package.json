@@ -10,6 +10,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.0",
     "bootstrap": "^4.5.3",
+    "mobile-detect": "^1.4.4",
     "next": "10.0.5",
     "react": "17.0.1",
     "react-bootstrap": "^1.4.3",
