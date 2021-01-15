@@ -7,7 +7,6 @@ import { getRandomDirection } from '../../src/snake';
 import { useDispatch, useSelector } from 'react-redux';
 import { countIncreased, selectGameOver, finished } from './boardSlice';
 import { selectCount } from './boardSlice';
-import { Direction } from 'readline';
 
 export default function Board() {
     const [direction, setDirection] = useState(getRandomDirection());
@@ -60,68 +59,38 @@ export default function Board() {
     };
 
     useEffect(()=>{
-        let currIsHorizontal = directionRef.current == 'left' || directionRef.current == 'right';
-        let currIsVertical = directionRef.current == 'top' || directionRef.current == 'bottom';
         let trySetDirection = (condition: boolean, direction) => {
             if(condition)
                 setDirection(direction);
         };
 
-        let onkeydown = (e: KeyboardEvent)=> {
-            switch (e.code) {
-                case 'ArrowLeft':
-                    trySetDirection(currIsVertical, 'left');
-                    break;
-                case 'ArrowRight':
-                    trySetDirection(currIsVertical, 'right');
-                    break;
-                case 'ArrowUp':
-                    trySetDirection(currIsHorizontal, 'top');
-                    break;
-                case 'ArrowDown':
-                    trySetDirection(currIsHorizontal, 'bottom');
-                    break;
-            }
+        let changeDirection = (direction) => {
+            let currIsHorizontal = directionRef.current == 'left' || directionRef.current == 'right';
+            let currIsVertical = directionRef.current == 'up' || directionRef.current == 'down';
+            trySetDirection(currIsVertical, direction);
+            trySetDirection(currIsHorizontal, direction);
         }
 
-        let swipedRight = (e) => {
-            trySetDirection(currIsVertical, 'right');
-            alert(e.target);
-        };
+        let onkeydown = (e: KeyboardEvent)=> {
+            changeDirection(e.code.replace('Arrow','').toLowerCase());
+        }
 
-        let swipedLeft = (e) => {
-            trySetDirection(currIsVertical, 'left');
-            alert(e.target);
-        };
-
-        let swipedTop = (e) => {
-            trySetDirection(currIsHorizontal, 'top');
-            alert(e.target);
-        };
-
-        let swipedBottom = (e) => {
-            trySetDirection(currIsHorizontal, 'bottom');
-            alert(e.target);
+        let swiped = (e) => {
+            changeDirection(e.detail.dir);
         };
 
         document.addEventListener('keydown', onkeydown);
-        document.addEventListener('swiped-right', swipedRight);
-        document.addEventListener('swiped-left', swipedLeft);
-        document.addEventListener('swiped-top', swipedTop);
-        document.addEventListener('swiped-bottom', swipedBottom);
+        document.addEventListener('swiped', swiped);
 
         return () => {
-            document.addEventListener('swiped-bottom', swipedBottom);
-            document.addEventListener('swiped-top', swipedTop);
-            document.addEventListener('swiped-left', swipedLeft);
-            document.removeEventListener('swiped-right', swipedRight);
+            document.removeEventListener('swiped', swiped);
             document.removeEventListener('keydown', onkeydown);
         }
     },[]);
 
     useEffect(()=>{
         if(!gameOver) {
-            let timeout = Math.max(800 - 100 * count, 200);
+            let timeout = Math.max(700 - 100 * count, 200);
             const timer = setTimeout(function moveSnake(){
                 let movedSnake = snakeRef.current.move(directionRef.current, appleRef.current);
                 if(checkGameOver(movedSnake))

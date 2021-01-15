@@ -12,10 +12,11 @@ export default function Home() {
 
     return (
         <Provider store={store}>
-            <script src="../lib/swiped-events.min.js"></script>
+            <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no,initial-scale=1,maximum-scale=1" />
             <Head>
                 <title>{gameTitleStr}</title>
                 <link rel="icon" href="/favicon.ico" />
+                <script type="text/javascript" src="../static/swiped-events.min.js"></script>
             </Head>
             <div className={styles.container}>
                 <div className={styles.auto}/>
