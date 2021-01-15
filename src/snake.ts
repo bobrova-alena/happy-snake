@@ -19,9 +19,9 @@ export class Snake {
         return this.parts[1];
     }
 
-    initialize(headXCoord: number, headYCoord: number, direction: Direction){
-        this.parts = new Array<Coords>(4);
-        this.parts[0] = { xCoord: headXCoord, yCoord: headYCoord };
+    initialize(tail: Coords, direction: Direction){
+        this.parts = new Array<Coords>(snakeInitialLength);
+        this.parts[0] = tail;
         for(let i = 1; i < this.parts.length; i ++) {
             this.parts[i] = this._createNextPart(direction, this.parts[i-1]);
         }
@@ -87,3 +87,5 @@ export function getRandomDirection(): Direction {
 }
 
 export type Direction = 'left' | 'right' | 'up' | 'down';
+
+export const snakeInitialLength: number = 4;

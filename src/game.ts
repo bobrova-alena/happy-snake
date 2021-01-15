@@ -1,14 +1,9 @@
 import { Direction, Snake } from "./snake";
-import { fieldSideSize, getRandomCoord } from "./utils";
+import { fieldSideSize, getSnakeTailCoors } from "./utils";
 
 export function createSnake(direction: Direction){
-    let maxXCoord = fieldSideSize;
-    let maxYCoord = fieldSideSize;
-    let xCoord = getRandomCoord(maxXCoord);
-    let yCoord = getRandomCoord(maxYCoord);
-
     let snake = new Snake();
-    snake.initialize(xCoord, yCoord, direction);
+    snake.initialize(getSnakeTailCoors(direction), direction);
     return snake;
 }
 
