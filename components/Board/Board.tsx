@@ -59,10 +59,10 @@ export default function Board() {
     };
 
     useEffect(()=>{
+        let currIsHorizontal = directionRef.current == 'left' || directionRef.current == 'right';
+        let currIsVertical = directionRef.current == 'top' || directionRef.current == 'bottom';
+
         let onkeydown = (e: KeyboardEvent)=> {
-            let currIsHorizontal = directionRef.current == 'left' || directionRef.current == 'right';
-            let currIsVertical = directionRef.current == 'top' || directionRef.current == 'bottom';
-            
             switch (e.code) {
                 case 'ArrowLeft':
                     if(currIsVertical)
@@ -83,7 +83,9 @@ export default function Board() {
         }
 
         let swipedRight = (e) => {
-            alert(e.target);
+            if(currIsVertical)
+                setDirection('right');
+            //alert(e.target);
         };
 
         document.addEventListener('keydown', onkeydown);
