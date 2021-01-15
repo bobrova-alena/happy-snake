@@ -1,0 +1,13 @@
+.count {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.rules {
+}
+
+.info {
+    margin: 30px 20px 0px 20px;
+    max-width: 500px;
+    color: gray;
+}

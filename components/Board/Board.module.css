@@ -1,0 +1,24 @@
+.board {
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.row {
+    display: flex;
+}
+
+.gameOver {
+    transition-property: background-color;
+    transition-duration: 3s;
+    background-color: rgb(165, 109, 109);
+}
+
+.gameOverText {
+    font-size: 35px;
+    color: white;
+    font-weight: 500;
+}
+
+.displayNone {
+    display: none;
+}

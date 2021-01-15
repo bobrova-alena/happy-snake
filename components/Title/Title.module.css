@@ -1,0 +1,25 @@
+.titleContainer {
+    display: flex;
+    margin-bottom: 25px;
+    justify-content: center;
+}
+
+.title {
+    font-size: clamp(24px, 8vw, 70px);;
+    color: rgb(98, 189, 86);
+    font-weight: 600;
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.snakeImage {
+    width: 20vw;
+    height: 20vw;
+    max-width: 100px;
+    max-height: 100px;
+}
