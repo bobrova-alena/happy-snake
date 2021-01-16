@@ -59,24 +59,22 @@ export default function Board() {
     };
 
     useEffect(()=>{
-        let trySetDirection = (condition: boolean, direction) => {
-            if(condition)
-                setDirection(direction);
-        };
-
-        let changeDirection = (direction) => {
+        let tryChangeDirection = (direction) => {
             let currIsHorizontal = directionRef.current == 'left' || directionRef.current == 'right';
             let currIsVertical = directionRef.current == 'up' || directionRef.current == 'down';
-            trySetDirection(currIsVertical, direction);
-            trySetDirection(currIsHorizontal, direction);
+
+            if((currIsHorizontal && (direction == 'up' || direction == 'down')) || (currIsVertical && (direction == 'left' || direction == 'right')))
+                setDirection(direction);
         }
 
         let onkeydown = (e: KeyboardEvent)=> {
-            changeDirection(e.code.replace('Arrow','').toLowerCase());
+            tryChangeDirection(e.code.replace('Arrow','').toLowerCase());
         }
 
         let swiped = (e) => {
-            changeDirection(e.detail.dir);
+            let board = document.getElementById('board');
+            if(board.contains(e.target))
+                tryChangeDirection(e.detail.dir);
         };
 
         document.addEventListener('keydown', onkeydown);
