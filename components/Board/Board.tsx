@@ -59,7 +59,7 @@ export default function Board() {
     };
 
     useEffect(()=>{
-        let changeDirection = (direction) => {
+        let tryChangeDirection = (direction) => {
             let currIsHorizontal = directionRef.current == 'left' || directionRef.current == 'right';
             let currIsVertical = directionRef.current == 'up' || directionRef.current == 'down';
 
@@ -68,11 +68,13 @@ export default function Board() {
         }
 
         let onkeydown = (e: KeyboardEvent)=> {
-            changeDirection(e.code.replace('Arrow','').toLowerCase());
+            tryChangeDirection(e.code.replace('Arrow','').toLowerCase());
         }
 
         let swiped = (e) => {
-            changeDirection(e.detail.dir);
+            let board = document.getElementById('board');
+            if(board.contains(e.target))
+                tryChangeDirection(e.detail.dir);
         };
 
         document.addEventListener('keydown', onkeydown);
