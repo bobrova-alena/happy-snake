@@ -77,7 +77,7 @@ export default function Board() {
 
         let swiped = (e) => {
             changeDirection(e.detail.dir);
-            e.stopImmediatePropagation();
+            e.preventDefault();
         };
 
         document.addEventListener('keydown', onkeydown);
