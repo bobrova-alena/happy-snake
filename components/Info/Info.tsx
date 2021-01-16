@@ -18,7 +18,7 @@ export default function Info(){
             setIsMobile(true);
     }, []);
 
-    const rulesStr = `The purpose of the game is to ate as many apples as possible. Use ${isMobile ? 'swap' : 'arrow keys'} to direct the snake. After every eaten apple length and speed of the snake will grow. Good luck!`;
+    const rulesStr = `The purpose of the game is to ate as many apples as possible. ${isMobile ? 'Swipe left, right, up or down on the field' : 'Press left, right, up or down keys'} to turn the snake. After every eaten apple length and speed of the snake will grow. Good luck!`;
     const countStr = `Count of apples: ${count}`;
     
     return (
