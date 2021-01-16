@@ -59,16 +59,12 @@ export default function Board() {
     };
 
     useEffect(()=>{
-        let trySetDirection = (condition: boolean, direction) => {
-            if(condition)
-                setDirection(direction);
-        };
-
         let changeDirection = (direction) => {
             let currIsHorizontal = directionRef.current == 'left' || directionRef.current == 'right';
             let currIsVertical = directionRef.current == 'up' || directionRef.current == 'down';
-            trySetDirection(currIsVertical, direction);
-            trySetDirection(currIsHorizontal, direction);
+
+            if((currIsHorizontal && (direction == 'up' || direction == 'down')) || (currIsVertical && (direction == 'left' || direction == 'right')))
+                setDirection(direction);
         }
 
         let onkeydown = (e: KeyboardEvent)=> {
