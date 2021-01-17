@@ -24,7 +24,12 @@ export default function Info(){
     return (
         <div className={styles.info}>
             {started ? 
-                <div className={styles.count}>{countStr}</div> :
+                <>
+                    <div className={`${styles.count} ${isMobile ? "" : styles.bottomPadding}`}>{countStr}</div>
+                    { isMobile ? 
+                        <img src={require("../../public/images/swipe.png")} alt="Swipe" className={styles.swipeImage}/> :
+                        <img src={require("../../public/images/arrow-keys.svg")} alt="Arrow keys" className={styles.arrowKeysImage}/>}
+                </> :
                 <div className={styles.rules}>{rulesStr}</div>
             }
         </div>

@@ -12,10 +12,10 @@ export default function Playspot(){
     return (
         <div className={styles.playspot}>
             { started ? 
-                <>
+                <div>
                     <Board/>
-                    <Info/>  
-                </>
+                    <Info/>
+                </div>  
                 : <Start/> }
         </div>
     );
