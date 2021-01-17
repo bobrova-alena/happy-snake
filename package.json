@@ -12,6 +12,7 @@
     "bootstrap": "^4.5.3",
     "mobile-detect": "^1.4.4",
     "next": "10.0.5",
+    "next-images": "^1.6.2",
     "react": "17.0.1",
     "react-bootstrap": "^1.4.3",
     "react-dom": "17.0.1",
