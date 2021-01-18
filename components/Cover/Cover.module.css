@@ -20,11 +20,4 @@
 
 .cover .playBtn {
     font-size: 15pt;
-    color: white;
-    border-color: white;
-}
-
-.cover .playBtn:hover {
-    background-color: rgb(131, 204, 122);
-    border-color: white;
 }
