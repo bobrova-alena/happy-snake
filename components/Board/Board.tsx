@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { countIncreased, selectGameOver, finished, resetState } from './boardSlice';
 import { selectCount } from './boardSlice';
 import MobileDetect from 'mobile-detect';
-import Button from 'react-bootstrap/Button';
+import Cover from '../Cover/Cover';
 
 type BoardInitialState = {
     direction: Direction,
@@ -131,8 +131,6 @@ export default function Board() {
         setState(createInitialBoardState());
     };
 
-    let playBtnStr = 'Play';
-
     return (
         <div id='board' className={`${styles.board} ${gameOver? styles.gameOver: ''}`}>
             {fieldIterator.map(rowIndex => 
@@ -145,11 +143,7 @@ export default function Board() {
                     })}
                 </div>)}
             {gameOver ? 
-                <div className={styles.cover}>
-                    <div className={styles.auto}/>
-                    <Button variant="outline-success" className={styles.playBtn} onClick={()=>reset()} >{playBtnStr}</Button>
-                    <div className={styles.auto}/>
-                </div> :
+                <Cover handleOnClick={() => reset() }/> :
                 <></> }
         </div>
     );
