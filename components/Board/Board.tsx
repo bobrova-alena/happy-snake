@@ -7,11 +7,13 @@ import { getRandomDirection } from '../../src/snake';
 import { useDispatch, useSelector } from 'react-redux';
 import { countIncreased, selectGameOver, finished } from './boardSlice';
 import { selectCount } from './boardSlice';
+import MobileDetect from 'mobile-detect';
 
 export default function Board() {
     const [direction, setDirection] = useState(getRandomDirection());
     const [snake, setSnake] = useState(createSnake(direction));
     const [apple, setApple] = useState(getAppleCoord(snake));
+    const [isMobile, setIsMobile] = useState(false);
     const gameOver = useSelector(selectGameOver);
     const count = useSelector(selectCount);
     const dispatch = useDispatch();
@@ -59,6 +61,12 @@ export default function Board() {
     };
 
     useEffect(()=>{
+        var detector = new MobileDetect(navigator.userAgent);
+        if(detector.mobile())
+            setIsMobile(true);
+    }, []);
+
+    useEffect(()=>{
         let tryChangeDirection = (direction) => {
             let currIsHorizontal = directionRef.current == 'left' || directionRef.current == 'right';
             let currIsVertical = directionRef.current == 'up' || directionRef.current == 'down';
@@ -88,7 +96,7 @@ export default function Board() {
 
     useEffect(()=>{
         if(!gameOver) {
-            let timeout = Math.max(700 - 100 * count, 200);
+            let timeout = Math.max(700 - 100 * count, isMobile ? 400 : 300);
             const timer = setTimeout(function moveSnake(){
                 let movedSnake = snakeRef.current.move(directionRef.current, appleRef.current);
                 if(checkGameOver(movedSnake))
