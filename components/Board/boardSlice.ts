@@ -22,13 +22,17 @@ const boardSlice = createSlice({
         },
         finished (state: BoardState) {
             state.gameOver = true;
+        },
+        resetState (state: BoardState){
+            return initialState;
         }
     }
 });
 
 export const {
     countIncreased,
-    finished
+    finished,
+    resetState
 } = boardSlice.actions;
 
 export default boardSlice.reducer;
