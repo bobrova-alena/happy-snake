@@ -1,5 +1,5 @@
 import Button from 'react-bootstrap/Button';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { started } from '../Playspot/playSpotSlice';
 import Info from '../Info/Info';
 import styles from './Start.module.css';

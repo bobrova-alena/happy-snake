@@ -3,27 +3,40 @@ import { fieldIterator, fieldSideSize, getAppleCoord, getId, Location } from "..
 import Cell, { CellType } from "../Cell/Cell";
 import { useEffect, useRef, useState } from 'react';
 import { checkGameOver, createSnake } from '../../src/game';
-import { getRandomDirection } from '../../src/snake';
+import { Coords, Direction, getRandomDirection, Snake } from '../../src/snake';
 import { useDispatch, useSelector } from 'react-redux';
-import { countIncreased, selectGameOver, finished } from './boardSlice';
+import { countIncreased, selectGameOver, finished, resetState } from './boardSlice';
 import { selectCount } from './boardSlice';
 import MobileDetect from 'mobile-detect';
+import Cover from '../Cover/Cover';
+
+type BoardInitialState = {
+    direction: Direction,
+    snake: Snake,
+    apple: Coords
+};
+
+function createInitialBoardState(): BoardInitialState {
+    let direction = getRandomDirection();
+    let snake = createSnake(direction);
+    return {
+        direction,
+        snake,
+        apple: getAppleCoord(snake)
+    }
+}
 
 export default function Board() {
-    const [direction, setDirection] = useState(getRandomDirection());
-    const [snake, setSnake] = useState(createSnake(direction));
-    const [apple, setApple] = useState(getAppleCoord(snake));
+    const [state, setState ] = useState(createInitialBoardState());
+    const { snake, apple } = state;
+
     const [isMobile, setIsMobile] = useState(false);
     const gameOver = useSelector(selectGameOver);
     const count = useSelector(selectCount);
     const dispatch = useDispatch();
 
-    const appleRef = useRef(apple);
-    appleRef.current = apple;
-    const snakeRef = useRef(snake);
-    snakeRef.current = snake;
-    const directionRef = useRef(direction);
-    directionRef.current = direction;
+    const stateRef = useRef(state);
+    stateRef.current = state;
     
     let getCellType = (xCoord: number, yCoord: number): CellType => {
         let isSnake = false;
@@ -67,12 +80,13 @@ export default function Board() {
     }, []);
 
     useEffect(()=>{
-        let tryChangeDirection = (direction) => {
-            let currIsHorizontal = directionRef.current == 'left' || directionRef.current == 'right';
-            let currIsVertical = directionRef.current == 'up' || directionRef.current == 'down';
+        let tryChangeDirection = (newDirection) => {
+            let currDirection = stateRef.current.direction;
+            let currIsHorizontal = currDirection == 'left' || currDirection == 'right';
+            let currIsVertical = currDirection == 'up' || currDirection == 'down';
 
-            if((currIsHorizontal && (direction == 'up' || direction == 'down')) || (currIsVertical && (direction == 'left' || direction == 'right')))
-                setDirection(direction);
+            if((currIsHorizontal && (newDirection == 'up' || newDirection == 'down')) || (currIsVertical && (newDirection == 'left' || newDirection == 'right')))
+                setState({ ...stateRef.current, direction: newDirection });
         }
 
         let onkeydown = (e: KeyboardEvent)=> {
@@ -96,23 +110,26 @@ export default function Board() {
 
     useEffect(()=>{
         if(!gameOver) {
-            let timeout = Math.max(700 - 100 * count, isMobile ? 400 : 300);
+            let timeout = Math.max(700 - 100 * count, isMobile ? 300 : 200);
             const timer = setTimeout(function moveSnake(){
-                let movedSnake = snakeRef.current.move(directionRef.current, appleRef.current);
+                let movedSnake = stateRef.current.snake.move(stateRef.current.direction, stateRef.current.apple);
                 if(checkGameOver(movedSnake))
                     dispatch(finished());
-                if(movedSnake.appleIsEatten(appleRef.current)) {
-                    setApple(getAppleCoord(movedSnake));
+                if(movedSnake.appleIsEatten(stateRef.current.apple)) {
+                    setState({ ...stateRef.current, apple: getAppleCoord(movedSnake) });
                     dispatch(countIncreased());
                 }
-                setSnake(movedSnake);
+                setState({ ... stateRef.current, snake: movedSnake });
             }, timeout);
 
             return () => clearTimeout(timer);
         }
     });
 
-    let gameOverStr = 'Game Over!';
+    let reset = () => {
+        dispatch(resetState());
+        setState(createInitialBoardState());
+    };
 
     return (
         <div id='board' className={`${styles.board} ${gameOver? styles.gameOver: ''}`}>
@@ -125,8 +142,9 @@ export default function Board() {
                         return <Cell key={getId(xCoord, yCoord)} xCoord={xCoord} yCoord={yCoord} type={cellType} neighborLocation={getNeighborLocation(xCoord, yCoord, cellType)}/>
                     })}
                 </div>)}
+            {gameOver ? 
+                <Cover handleOnClick={() => reset() }/> :
+                <></> }
         </div>
     );
-
-    //<div className={gameOver? styles.gameOverText: styles.displayNone }>{gameOverStr}</div>
 }

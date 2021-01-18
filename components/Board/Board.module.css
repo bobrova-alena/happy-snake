@@ -2,6 +2,7 @@
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
     border-radius: 5px;
     touch-action: none;
+    position: relative;
 }
 
 .row {
@@ -11,15 +12,5 @@
 .gameOver {
     transition-property: background-color;
     transition-duration: 3s;
-    background-color: rgb(165, 109, 109);
-}
-
-.gameOverText {
-    font-size: 35px;
-    color: white;
-    font-weight: 500;
-}
-
-.displayNone {
-    display: none;
+    background-color: rgb(241, 241, 241);
 }
