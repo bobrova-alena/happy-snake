@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectGameStarted } from '../Playspot/playSpotSlice';
 
 export default function Footer () {
-    const authorStr = 'Writen by Alena Bobrova';
+    const authorStr = 'Written by Alena Bobrova';
     const started = useSelector(selectGameStarted);
 
     return (
